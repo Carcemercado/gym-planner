@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { db, Exercise, Workout, SetEntry, WorkoutPlan } from "@/lib/db";
 import { v4 as uuidv4 } from "uuid";
@@ -9,7 +9,7 @@ import ExercisePicker from "@/components/ExercisePicker";
 import SetEditor, { Unit } from "@/components/SetEditor";
 import RestTimer from "@/components/RestTimer";
 
-export default function NewWorkoutPage() {
+function NewWorkoutContent() {
   const searchParams = useSearchParams();
   const planId = searchParams.get("planId");
   
@@ -18,6 +18,7 @@ export default function NewWorkoutPage() {
   const [workoutId, setWorkoutId] = useState<string | null>(null);
   const [startedAt, setStartedAt] = useState<Date | null>(null);
   const [planName, setPlanName] = useState<string | null>(null);
+  const [plans, setPlans] = useState<WorkoutPlan[]>([]);
 
   useEffect(() => {
     // ensure a workout entity exists when entering the page
@@ -47,6 +48,10 @@ export default function NewWorkoutPage() {
           setPlanName(plan.name);
         }
       }
+
+      // Load all available plans
+      const allPlans = await db.workoutPlans.orderBy("updated_at").reverse().toArray();
+      setPlans(allPlans);
     };
     createWorkout();
   }, [planId]);
@@ -79,21 +84,52 @@ export default function NewWorkoutPage() {
     await db.workouts.update(workoutId, { updated_at: Date.now() });
   };
 
+  const loadPlanExercises = (plan: WorkoutPlan) => {
+    setSelected(plan.exercise_ids);
+    if (plan.exercise_ids.length > 0) {
+      setCurrentExerciseId(plan.exercise_ids[0]);
+    }
+    setPlanName(plan.name);
+  };
+
   return (
     <main>
       <div className="mb-4">
-        <Link href="/workouts">← Back</Link>
+        <Link href="/" className="text-sky-400 hover:text-sky-300">← Back</Link>
       </div>
       <h1 className="text-2xl font-bold mb-2">New Workout{planName ? `: ${planName}` : ""}</h1>
-      {startedAt && <div className="text-sm text-gray-600 mb-4">Started {startedAt.toLocaleString()}</div>}
+      {startedAt && <div className="text-sm text-gray-400 mb-4">Started {startedAt.toLocaleString()}</div>}
 
       <div className="grid gap-4">
+        {/* Quick Plan Selection */}
+        {plans.length > 0 && (
+          <section className="space-y-2">
+            <h2 className="font-semibold">Quick Start from Plan</h2>
+            <div className="grid grid-cols-2 gap-2">
+              {plans.map((plan) => (
+                <button
+                  key={plan.id}
+                  onClick={() => loadPlanExercises(plan)}
+                  className={`p-3 rounded-lg border-2 transition ${
+                    planName === plan.name
+                      ? "border-emerald-500 bg-emerald-900/40 text-emerald-300"
+                      : "border-gray-700 bg-gray-800 text-gray-300 hover:border-emerald-500 hover:bg-emerald-900/20"
+                  }`}
+                >
+                  <div className="text-sm font-medium">{plan.name}</div>
+                  <div className="text-xs text-gray-400">{plan.exercise_ids.length} exercises</div>
+                </button>
+              ))}
+            </div>
+          </section>
+        )}
+
         <section className="space-y-2">
           <h2 className="font-semibold">Pick exercises</h2>
           <ExercisePicker selectedIds={selected} onToggle={toggleExercise} />
           <div className="flex flex-wrap gap-2">
             {selected.map((id) => (
-              <button key={id} className={id === currentExerciseId ? "px-2 py-1 rounded bg-sky-600 text-white" : "px-2 py-1 rounded bg-gray-200"} onClick={() => setCurrent(id)}>
+              <button key={id} className={id === currentExerciseId ? "px-2 py-1 rounded bg-sky-600 text-white" : "px-2 py-1 rounded bg-gray-700 text-gray-200"} onClick={() => setCurrent(id)}>
                 {id.slice(0, 6)}
               </button>
             ))}
@@ -111,9 +147,17 @@ export default function NewWorkoutPage() {
         </section>
 
         <section>
-          <button className="px-3 py-2 rounded bg-emerald-600 text-white" onClick={finishWorkout}>Finish Workout</button>
+          <button className="px-3 py-2 rounded bg-emerald-600 text-white hover:bg-emerald-700 transition" onClick={finishWorkout}>Finish Workout</button>
         </section>
       </div>
     </main>
+  );
+}
+
+export default function NewWorkoutPage() {
+  return (
+    <Suspense fallback={<div className="text-center py-8 text-gray-400">Loading...</div>}>
+      <NewWorkoutContent />
+    </Suspense>
   );
 }

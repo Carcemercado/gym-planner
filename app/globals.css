@@ -9,3 +9,28 @@ html, body {
 body {
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
 }
+
+/* Dark theme color adjustments */
+input, select, textarea {
+  @apply bg-gray-800 border-gray-700 text-gray-100;
+}
+
+input:focus, select:focus, textarea:focus {
+  @apply ring-sky-500 border-sky-500;
+}
+
+/* Install prompt animation */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}

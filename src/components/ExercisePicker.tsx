@@ -35,7 +35,7 @@ export default function ExercisePicker({ selectedIds, onToggle }: { selectedIds:
       
       {muscleGroups.length > 0 && (
         <div>
-          <label className="block text-xs font-medium text-gray-600 mb-1">Filter by Muscle Group</label>
+          <label className="block text-xs font-medium text-gray-400 mb-1">Filter by Muscle Group</label>
           <select
             className="border rounded px-2 py-1 w-full text-sm"
             value={muscleFilter}
@@ -49,7 +49,7 @@ export default function ExercisePicker({ selectedIds, onToggle }: { selectedIds:
         </div>
       )}
 
-      <div className="text-xs text-gray-500 px-1">
+      <div className="text-xs text-gray-400 px-1">
         {list.length} exercise{list.length !== 1 ? 's' : ''} found
       </div>
 
@@ -57,12 +57,12 @@ export default function ExercisePicker({ selectedIds, onToggle }: { selectedIds:
         {list.map((e) => {
           const checked = selectedIds.includes(e.id);
           return (
-            <li key={e.id} className="flex items-center justify-between border rounded px-3 py-2 bg-white hover:bg-gray-50">
+            <li key={e.id} className="flex items-center justify-between border border-gray-700 rounded px-3 py-2 bg-gray-800 hover:bg-gray-700">
               <div>
                 <div className="font-medium">{e.name}</div>
-                {e.muscle_group && <div className="text-xs text-gray-500">{e.muscle_group}</div>}
+                {e.muscle_group && <div className="text-xs text-gray-400">{e.muscle_group}</div>}
               </div>
-              <button className={checked ? "px-3 py-1 bg-emerald-600 text-white rounded hover:bg-emerald-700" : "px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"} onClick={() => onToggle(e.id)}>
+              <button className={checked ? "px-3 py-1 bg-emerald-600 text-white rounded hover:bg-emerald-700 transition" : "px-3 py-1 bg-gray-700 text-gray-200 rounded hover:bg-gray-600 transition"} onClick={() => onToggle(e.id)}>
                 {checked ? "Selected" : "Select"}
               </button>
             </li>

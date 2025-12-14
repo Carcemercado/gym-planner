@@ -12,9 +12,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="manifest" href="/manifest.webmanifest" />
-        <meta name="theme-color" content="#0ea5e9" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <meta name="theme-color" content="#111827" />
       </head>
-      <body className="min-h-screen bg-gray-50 text-gray-800">
+      <body className="min-h-screen bg-gray-900 text-gray-100">
         <ServiceWorkerRegistrar />
         <div className="max-w-md mx-auto p-4">
           {children}

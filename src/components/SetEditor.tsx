@@ -26,7 +26,7 @@ export default function SetEditor({ onAdd }: { onAdd: (reps: number, weight: num
           <option value="lb">lb</option>
         </select>
       </div>
-      <button className="bg-sky-600 text-white px-3 py-2 rounded" onClick={() => onAdd(reps, weight, unit)}>Add Set</button>
+      <button className="bg-sky-600 text-white px-3 py-2 rounded hover:bg-sky-700 transition" onClick={() => onAdd(reps, weight, unit)}>Add Set</button>
     </div>
   );
 }

@@ -62,11 +62,13 @@ export default function HomePage() {
           </Link>
         </div>
         <div className="grid grid-cols-2 gap-3 mt-3">
-          <Link href="/exercises" className="p-3 rounded-lg border bg-white hover:bg-gray-50 transition">
-            <div className="text-sm font-medium">Exercises</div>
+          <Link href="/exercises" className="group p-4 rounded-lg bg-amber-600 text-white hover:bg-amber-700 transition duration-200 shadow-lg hover:shadow-amber-600/40">
+            <div className="text-sm font-medium mb-1">Exercises</div>
+            <div className="text-xs opacity-90">Browse library</div>
           </Link>
-          <Link href="/workouts" className="p-3 rounded-lg border bg-white hover:bg-gray-50 transition">
-            <div className="text-sm font-medium">History</div>
+          <Link href="/workouts" className="p-4 rounded-lg bg-violet-600 hover:bg-violet-700 text-white transition duration-200 shadow-lg hover:shadow-violet-600/40" style={{ backgroundImage: 'linear-gradient(to bottom right, rgb(109, 40, 217), rgb(91, 33, 182))' }}>
+            <div className="text-sm font-medium mb-1">History</div>
+            <div className="text-xs opacity-90">View workouts</div>
           </Link>
         </div>
       </section>
@@ -76,17 +78,17 @@ export default function HomePage() {
         <section className="mb-6">
           <h2 className="text-lg font-semibold mb-3">Your Progress</h2>
           <div className="grid grid-cols-3 gap-3">
-            <div className="border rounded-lg p-3 bg-white">
-              <div className="text-2xl font-bold text-sky-600">{stats.totalWorkouts}</div>
-              <div className="text-xs text-gray-600">Total Workouts</div>
+            <div className="border border-gray-700 rounded-lg p-3 bg-gray-800">
+              <div className="text-2xl font-bold text-sky-400">{stats.totalWorkouts}</div>
+              <div className="text-xs text-gray-400">Total Workouts</div>
             </div>
-            <div className="border rounded-lg p-3 bg-white">
-              <div className="text-2xl font-bold text-emerald-600">{stats.thisWeek}</div>
-              <div className="text-xs text-gray-600">This Week</div>
+            <div className="border border-gray-700 rounded-lg p-3 bg-gray-800">
+              <div className="text-2xl font-bold text-emerald-400">{stats.thisWeek}</div>
+              <div className="text-xs text-gray-400">This Week</div>
             </div>
-            <div className="border rounded-lg p-3 bg-white">
-              <div className="text-2xl font-bold text-amber-600">{stats.totalSets}</div>
-              <div className="text-xs text-gray-600">Total Sets</div>
+            <div className="border border-gray-700 rounded-lg p-3 bg-gray-800">
+              <div className="text-2xl font-bold text-amber-400">{stats.totalSets}</div>
+              <div className="text-xs text-gray-400">Total Sets</div>
             </div>
           </div>
         </section>
@@ -101,11 +103,11 @@ export default function HomePage() {
           </div>
           <div className="space-y-2">
             {plans.map((p) => (
-              <Link key={p.id} href={`/workouts/new?planId=${p.id}`} className="block border rounded-lg p-3 bg-white hover:bg-gray-50 transition">
+              <Link key={p.id} href={`/workouts/new?planId=${p.id}`} className="block border border-gray-700 rounded-lg p-3 bg-gray-800 hover:bg-gray-700 transition">
                 <div className="flex justify-between items-center">
                   <div>
                     <div className="font-medium">{p.name}</div>
-                    <div className="text-xs text-gray-500">{p.exercise_ids.length} exercises</div>
+                    <div className="text-xs text-gray-400">{p.exercise_ids.length} exercises</div>
                   </div>
                   <div className="text-sky-600 text-sm">Start →</div>
                 </div>
@@ -118,19 +120,19 @@ export default function HomePage() {
       {/* Last Workout */}
       <section className="mb-6">
         <h2 className="text-lg font-semibold mb-3">Last Workout</h2>
-        <div className="border rounded-lg p-4 bg-white">
+        <div className="border border-gray-700 rounded-lg p-4 bg-gray-800">
           {!mounted ? (
-            <div className="text-sm text-gray-600">Loading...</div>
+            <div className="text-sm text-gray-400">Loading...</div>
           ) : lastWorkout ? (
             <div>
-              <div className="text-sm text-gray-600 mb-2">{new Date(lastWorkout.date_utc).toLocaleDateString()} at {new Date(lastWorkout.date_utc).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+              <div className="text-sm text-gray-300 mb-2">{new Date(lastWorkout.date_utc).toLocaleDateString()} at {new Date(lastWorkout.date_utc).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
               {recentSets.length > 0 && (
-                <div className="text-xs text-gray-500">{recentSets.filter(s => s.workout_id === lastWorkout.id).length} sets completed</div>
+                <div className="text-xs text-gray-400">{recentSets.filter(s => s.workout_id === lastWorkout.id).length} sets completed</div>
               )}
             </div>
           ) : (
             <div className="text-center py-4">
-              <div className="text-sm text-gray-600 mb-3">No workouts yet</div>
+              <div className="text-sm text-gray-400 mb-3">No workouts yet</div>
               <Link href="/workouts/new" className="inline-block px-4 py-2 rounded bg-sky-600 text-white text-sm hover:bg-sky-700">Start Your First Workout</Link>
             </div>
           )}
@@ -141,13 +143,13 @@ export default function HomePage() {
       {mounted && recentSets.length > 0 && (
         <section>
           <h2 className="text-lg font-semibold mb-3">Recent Activity</h2>
-          <div className="border rounded-lg p-4 bg-white">
+          <div className="border border-gray-700 rounded-lg p-4 bg-gray-800">
             <ul className="space-y-2">
               {recentSets.slice(0, 3).map((s) => (
                 <li key={s.id} className="flex justify-between items-center">
                   <div>
                     <span className="font-medium text-sm">{exercises[s.exercise_id]?.name || "Exercise"}</span>
-                    <span className="text-xs text-gray-500 ml-2">{s.reps} reps {s.weight != null ? `× ${s.weight}${s.unit}` : ""}</span>
+                    <span className="text-xs text-gray-400 ml-2">{s.reps} reps {s.weight != null ? `× ${s.weight}${s.unit}` : ""}</span>
                   </div>
                   <div className="text-xs text-gray-400">{new Date(s.created_at).toLocaleDateString()}</div>
                 </li>

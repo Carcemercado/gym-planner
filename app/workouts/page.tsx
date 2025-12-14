@@ -56,16 +56,16 @@ export default function WorkoutsPage() {
   return (
     <main>
       <div className="mb-4">
-        <Link href="/">← Back</Link>
+        <Link href="/" className="text-sky-400 hover:text-sky-300">← Back</Link>
       </div>
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Workout History</h1>
-        <Link href="/workouts/new" className="px-3 py-2 rounded bg-sky-600 text-white">Start Workout</Link>
+        <Link href="/workouts/new" className="px-3 py-2 rounded bg-sky-600 text-white hover:bg-sky-700 transition">Start Workout</Link>
       </div>
       <ul className="space-y-3">
         {workouts.map((w) => (
-          <li key={w.id} className="border rounded p-3 bg-white">
-            <div className="text-sm text-gray-600">{new Date(w.date_utc).toLocaleString()}</div>
+          <li key={w.id} className="border border-gray-700 rounded p-3 bg-gray-800">
+            <div className="text-sm text-gray-400">{new Date(w.date_utc).toLocaleString()}</div>
             <div className="mt-2 space-y-1">
               {setsByWorkout(w.id).map((s) => (
                 <div key={s.id} className="text-sm">
@@ -78,7 +78,7 @@ export default function WorkoutsPage() {
       </ul>
       {hasMore && (
         <div className="mt-4 text-center">
-          <button className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300" onClick={loadMore}>Load More</button>
+          <button className="px-4 py-2 rounded bg-gray-700 hover:bg-gray-600 transition" onClick={loadMore}>Load More</button>
         </div>
       )}
     </main>

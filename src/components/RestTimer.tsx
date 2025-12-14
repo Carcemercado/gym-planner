@@ -60,13 +60,13 @@ export default function RestTimer({ initialSeconds = 90 }: { initialSeconds?: nu
   };
 
   return (
-    <div className="border rounded p-3 bg-white">
+    <div className="border border-gray-700 rounded p-3 bg-gray-800">
       <div className="text-center text-2xl font-mono">{Math.floor(secondsLeft / 60)}:{String(secondsLeft % 60).padStart(2, "0")}</div>
       <div className="flex gap-2 justify-center mt-2">
-        {!running && <button className="px-3 py-1 bg-sky-600 text-white rounded" onClick={start}>Start</button>}
-        {running && <button className="px-3 py-1 bg-amber-600 text-white rounded" onClick={pause}>Pause</button>}
-        {!running && secondsLeft !== initialSeconds && <button className="px-3 py-1 bg-emerald-600 text-white rounded" onClick={resume}>Resume</button>}
-        <button className="px-3 py-1 bg-gray-200 rounded" onClick={reset}>Reset</button>
+        {!running && <button className="px-3 py-1 bg-sky-600 text-white rounded hover:bg-sky-700 transition" onClick={start}>Start</button>}
+        {running && <button className="px-3 py-1 bg-amber-600 text-white rounded hover:bg-amber-700 transition" onClick={pause}>Pause</button>}
+        {!running && secondsLeft !== initialSeconds && <button className="px-3 py-1 bg-emerald-600 text-white rounded hover:bg-emerald-700 transition" onClick={resume}>Resume</button>}
+        <button className="px-3 py-1 bg-gray-700 rounded hover:bg-gray-600 transition" onClick={reset}>Reset</button>
       </div>
     </div>
   );

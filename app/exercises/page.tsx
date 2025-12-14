@@ -112,7 +112,7 @@ export default function ExercisesPage() {
   return (
     <main>
       <div className="mb-4">
-        <Link href="/">← Back</Link>
+        <Link href="/" className="text-sky-400 hover:text-sky-300">← Back</Link>
       </div>
       <h1 className="text-2xl font-bold mb-4">Exercise Library</h1>
 
@@ -120,7 +120,7 @@ export default function ExercisesPage() {
       {mounted && (
         <div className="mb-6 flex gap-2">
           <button 
-            className="px-4 py-2 rounded bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-50"
+            className="px-4 py-2 rounded bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-50 transition"
             onClick={loadBodyParts}
             disabled={loadingBodyParts || bodyParts.length > 0}
           >
@@ -148,7 +148,7 @@ export default function ExercisesPage() {
             {bodyParts.map((part) => (
               <button
                 key={part}
-                className="p-4 rounded-lg border-2 bg-white hover:border-emerald-500 hover:bg-emerald-50 transition capitalize text-center"
+                className="p-4 rounded-lg border-2 border-gray-700 bg-gray-800 hover:border-emerald-500 hover:bg-emerald-900/30 transition capitalize text-center"
                 onClick={() => loadExercisesForBodyPart(part)}
               >
                 <div className="font-medium">{part}</div>
@@ -164,7 +164,7 @@ export default function ExercisesPage() {
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-lg font-semibold capitalize">{selectedBodyPart} Exercises</h2>
             <button
-              className="text-sm text-gray-600 hover:text-gray-800"
+              className="text-sm text-gray-400 hover:text-gray-200"
               onClick={() => {
                 setSelectedBodyPart(null);
                 setApiExercises([]);
@@ -174,15 +174,15 @@ export default function ExercisesPage() {
             </button>
           </div>
           {importing ? (
-            <div className="text-center py-8 text-gray-600">Loading exercises...</div>
+            <div className="text-center py-8 text-gray-400">Loading exercises...</div>
           ) : (
             <div className="grid gap-2 max-h-[500px] overflow-y-auto">
               {apiExercises.map((ex) => (
-                <div key={ex.id} className="border rounded-lg p-3 bg-white hover:bg-gray-50">
+                <div key={ex.id} className="border border-gray-700 rounded-lg p-3 bg-gray-800 hover:bg-gray-700">
                   <div className="flex justify-between items-start gap-3">
                     <div className="flex-1">
                       <div className="font-medium">{ex.name}</div>
-                      <div className="text-xs text-gray-500 mt-1">
+                      <div className="text-xs text-gray-400 mt-1">
                         Target: {ex.target} | Equipment: {ex.equipment}
                       </div>
                     </div>
@@ -229,7 +229,7 @@ export default function ExercisesPage() {
             <label className="block text-sm">Muscle Group</label>
             <input className="border rounded px-2 py-1 w-full" value={muscle} onChange={(e) => setMuscle(e.target.value)} />
           </div>
-          <button className="bg-sky-600 text-white px-3 py-2 rounded hover:bg-sky-700" onClick={addExercise}>Add</button>
+          <button className="bg-sky-600 text-white px-3 py-2 rounded hover:bg-sky-700 transition" onClick={addExercise}>Add</button>
         </div>
       </div>
 
@@ -240,12 +240,12 @@ export default function ExercisesPage() {
         </h2>
         <ul className="space-y-2">
           {filteredExercises.map((e) => (
-            <li key={e.id} className="border rounded px-3 py-2 bg-white">
+            <li key={e.id} className="border border-gray-700 rounded px-3 py-2 bg-gray-800">
               <div className="flex justify-between items-start">
                 <div>
                   <div className="font-medium">{e.name}</div>
-                  {e.muscle_group && <div className="text-xs text-gray-500">{e.muscle_group}</div>}
-                  {e.notes && <div className="text-xs text-gray-400 mt-1 line-clamp-2">{e.notes}</div>}
+                  {e.muscle_group && <div className="text-xs text-gray-400">{e.muscle_group}</div>}
+                  {e.notes && <div className="text-xs text-gray-500 mt-1 line-clamp-2">{e.notes}</div>}
                 </div>
                 {!e.is_custom && <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded">API</span>}
               </div>
