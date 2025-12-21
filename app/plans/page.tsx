@@ -34,24 +34,39 @@ export default function PlansPage() {
         <Link href="/plans/new" className="px-3 py-2 rounded border border-sky-500/50 bg-sky-700 text-white transition shadow-md shadow-sky-900/40">Create Plan</Link>
       </div>
       <ul className="space-y-3">
-        {plans.map((p) => (
-          <li key={p.id} className="border border-gray-700 rounded p-3 bg-gray-800">
-            <div className="flex justify-between items-start">
-              <div className="flex-1">
-                <div className="font-semibold">{p.name}</div>
-                {p.notes && <div className="text-sm text-gray-400 mt-1">{p.notes}</div>}
-                <div className="mt-2 text-sm">
-                  <span className="text-gray-400">Exercises: </span>
-                  {p.exercise_ids.map((eid) => exercises[eid]?.name || "?").join(", ")}
+        {plans.map((p) => {
+          const muscleGroups = Array.from(
+            new Set(
+              p.exercise_ids
+                .map((eid) => exercises[eid]?.muscle_group)
+                .filter(Boolean)
+            )
+          ).sort();
+          
+          return (
+            <li key={p.id} className="border border-gray-700 rounded p-3 bg-gray-800">
+              <div className="flex justify-between items-start">
+                <div className="flex-1">
+                  <div className="font-semibold">{p.name}</div>
+                  {p.notes && <div className="text-sm text-gray-400 mt-1">{p.notes}</div>}
+                  {muscleGroups.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-1">
+                      {muscleGroups.map((mg) => (
+                        <span key={mg} className="px-2 py-0.5 rounded bg-gray-700 text-xs text-gray-300 capitalize">
+                          {mg}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div className="flex gap-2">
+                  <Link href={`/workouts/new?planId=${p.id}`} className="px-2 py-1 rounded border border-emerald-500/50 bg-emerald-700 text-white text-sm transition shadow-sm shadow-emerald-900/30">Start</Link>
+                  <button className="px-2 py-1 rounded border border-rose-500/60 bg-rose-700 text-white text-sm transition shadow-sm shadow-rose-900/30" onClick={() => deletePlan(p.id)}>Delete</button>
                 </div>
               </div>
-              <div className="flex gap-2">
-                <Link href={`/workouts/new?planId=${p.id}`} className="px-2 py-1 rounded border border-emerald-500/50 bg-emerald-700 text-white text-sm transition shadow-sm shadow-emerald-900/30">Start</Link>
-                <button className="px-2 py-1 rounded border border-rose-500/60 bg-rose-700 text-white text-sm transition shadow-sm shadow-rose-900/30" onClick={() => deletePlan(p.id)}>Delete</button>
-              </div>
-            </div>
-          </li>
-        ))}
+            </li>
+          );
+        })}
       </ul>
     </main>
   );
