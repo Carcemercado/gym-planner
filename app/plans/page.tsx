@@ -27,11 +27,11 @@ export default function PlansPage() {
   return (
     <main>
       <div className="mb-4">
-        <Link href="/" className="text-sky-400 hover:text-sky-300">← Back</Link>
+        <Link href="/" className="inline-block px-4 py-2 rounded-lg border border-emerald-500/50 bg-emerald-800 text-white transition duration-200 shadow-md shadow-emerald-900/40">← Back</Link>
       </div>
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Workout Plans</h1>
-        <Link href="/plans/new" className="px-3 py-2 rounded bg-sky-600 text-white hover:bg-sky-700 transition">Create Plan</Link>
+        <Link href="/plans/new" className="px-3 py-2 rounded border border-sky-500/50 bg-sky-700 text-white transition shadow-md shadow-sky-900/40">Create Plan</Link>
       </div>
       <ul className="space-y-3">
         {plans.map((p) => (
@@ -46,8 +46,8 @@ export default function PlansPage() {
                 </div>
               </div>
               <div className="flex gap-2">
-                <Link href={`/workouts/new?planId=${p.id}`} className="px-2 py-1 rounded bg-emerald-600 text-white text-sm">Start</Link>
-                <button className="px-2 py-1 rounded bg-red-100 text-red-700 text-sm" onClick={() => deletePlan(p.id)}>Delete</button>
+                <Link href={`/workouts/new?planId=${p.id}`} className="px-2 py-1 rounded border border-emerald-500/50 bg-emerald-700 text-white text-sm transition shadow-sm shadow-emerald-900/30">Start</Link>
+                <button className="px-2 py-1 rounded border border-rose-500/60 bg-rose-700 text-white text-sm transition shadow-sm shadow-rose-900/30" onClick={() => deletePlan(p.id)}>Delete</button>
               </div>
             </div>
           </li>

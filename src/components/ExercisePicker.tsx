@@ -3,10 +3,18 @@
 import { useEffect, useState } from "react";
 import { db, Exercise } from "@/lib/db";
 
-export default function ExercisePicker({ selectedIds, onToggle }: { selectedIds: string[]; onToggle: (id: string) => void }) {
+type Props = {
+  selectedIds: string[];
+  onToggle: (id: string) => void;
+  muscleFilter?: string;
+  onMuscleFilterChange?: (muscle: string) => void;
+  showMuscleFilter?: boolean;
+};
+
+export default function ExercisePicker({ selectedIds, onToggle, muscleFilter, onMuscleFilterChange, showMuscleFilter = true }: Props) {
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [query, setQuery] = useState("");
-  const [muscleFilter, setMuscleFilter] = useState<string>("all");
+  const [internalMuscleFilter, setInternalMuscleFilter] = useState<string>("all");
   const [muscleGroups, setMuscleGroups] = useState<string[]>([]);
 
   useEffect(() => {
@@ -18,28 +26,38 @@ export default function ExercisePicker({ selectedIds, onToggle }: { selectedIds:
     });
   }, []);
 
+  const activeMuscleFilter = muscleFilter ?? internalMuscleFilter;
+
   const list = exercises.filter((e) => {
     const matchesSearch = e.name.toLowerCase().includes(query.toLowerCase());
-    const matchesMuscle = muscleFilter === "all" || e.muscle_group === muscleFilter;
+    const matchesMuscle = activeMuscleFilter === "all" || e.muscle_group === activeMuscleFilter;
     return matchesSearch && matchesMuscle;
   });
+
+  const handleMuscleChange = (value: string) => {
+    if (onMuscleFilterChange) {
+      onMuscleFilterChange(value);
+    } else {
+      setInternalMuscleFilter(value);
+    }
+  };
 
   return (
     <div className="space-y-2">
       <input 
-        className="border rounded px-2 py-1 w-full" 
+        className="border border-gray-700 bg-gray-900 text-white rounded px-2 py-1 w-full focus:outline-none focus:border-sky-500" 
         placeholder="Search exercises" 
         value={query} 
         onChange={(e) => setQuery(e.target.value)} 
       />
       
-      {muscleGroups.length > 0 && (
+      {showMuscleFilter && muscleGroups.length > 0 && (
         <div>
           <label className="block text-xs font-medium text-gray-400 mb-1">Filter by Muscle Group</label>
           <select
-            className="border rounded px-2 py-1 w-full text-sm"
-            value={muscleFilter}
-            onChange={(e) => setMuscleFilter(e.target.value)}
+            className="border border-gray-700 bg-gray-900 text-white rounded px-2 py-1 w-full text-sm focus:outline-none focus:border-sky-500"
+            value={activeMuscleFilter}
+            onChange={(e) => handleMuscleChange(e.target.value)}
           >
             <option value="all">All Muscle Groups</option>
             {muscleGroups.map((mg) => (
@@ -57,12 +75,17 @@ export default function ExercisePicker({ selectedIds, onToggle }: { selectedIds:
         {list.map((e) => {
           const checked = selectedIds.includes(e.id);
           return (
-            <li key={e.id} className="flex items-center justify-between border border-gray-700 rounded px-3 py-2 bg-gray-800 hover:bg-gray-700">
+            <li key={e.id} className="flex items-center justify-between border border-gray-700 rounded px-3 py-2 bg-gray-900">
               <div>
                 <div className="font-medium">{e.name}</div>
                 {e.muscle_group && <div className="text-xs text-gray-400">{e.muscle_group}</div>}
               </div>
-              <button className={checked ? "px-3 py-1 bg-emerald-600 text-white rounded hover:bg-emerald-700 transition" : "px-3 py-1 bg-gray-700 text-gray-200 rounded hover:bg-gray-600 transition"} onClick={() => onToggle(e.id)}>
+              <button
+                className={checked
+                  ? "px-3 py-1 rounded border border-emerald-500/50 bg-emerald-700 text-white transition shadow-sm shadow-emerald-900/30"
+                  : "px-3 py-1 rounded border border-gray-600 bg-gray-900 text-white transition"}
+                onClick={() => onToggle(e.id)}
+              >
                 {checked ? "Selected" : "Select"}
               </button>
             </li>

@@ -112,8 +112,8 @@ function NewWorkoutContent() {
                   onClick={() => loadPlanExercises(plan)}
                   className={`p-3 rounded-lg border-2 transition ${
                     planName === plan.name
-                      ? "border-emerald-500 bg-emerald-900/40 text-emerald-300"
-                      : "border-gray-700 bg-gray-800 text-gray-300 hover:border-emerald-500 hover:bg-emerald-900/20"
+                      ? "border-emerald-400 bg-emerald-900 text-emerald-100 shadow-inner"
+                      : "border-gray-700 bg-gray-900 text-gray-200"
                   }`}
                 >
                   <div className="text-sm font-medium">{plan.name}</div>

@@ -52,21 +52,21 @@ export default function HomePage() {
       <section className="mb-6">
         <h2 className="text-lg font-semibold mb-3">Quick Actions</h2>
         <div className="grid grid-cols-2 gap-3">
-          <Link href="/workouts/new" className="p-4 rounded-lg bg-sky-600 text-white hover:bg-sky-700 transition">
+          <Link href="/workouts/new" className="p-4 rounded-lg border border-sky-500/50 bg-sky-600 text-white shadow-md shadow-sky-900/40 transition">
             <div className="text-sm font-medium mb-1">Start Workout</div>
             <div className="text-xs opacity-90">Begin session</div>
           </Link>
-          <Link href="/plans" className="p-4 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition">
+          <Link href="/plans" className="p-4 rounded-lg border border-emerald-500/50 bg-emerald-600 text-white shadow-md shadow-emerald-900/40 transition">
             <div className="text-sm font-medium mb-1">My Plans</div>
             <div className="text-xs opacity-90">{mounted && plans.length > 0 ? `${plans.length} saved` : "Create plans"}</div>
           </Link>
         </div>
         <div className="grid grid-cols-2 gap-3 mt-3">
-          <Link href="/exercises" className="p-4 rounded-lg bg-amber-800 text-white hover:bg-amber-900 transition duration-200 shadow-lg hover:shadow-amber-800/40">
+          <Link href="/exercises" className="p-4 rounded-lg border border-amber-500/60 bg-amber-900 text-white shadow-md shadow-amber-900/50 transition duration-200" style={{ backgroundColor: "#78350f" }}>
             <div className="text-sm font-medium mb-1">Exercises</div>
             <div className="text-xs opacity-90">Browse library</div>
           </Link>
-          <Link href="/workouts" className="p-4 rounded-lg bg-violet-600 hover:bg-violet-700 text-white transition duration-200 shadow-lg hover:shadow-violet-600/40" style={{ backgroundImage: 'linear-gradient(to bottom right, rgb(109, 40, 217), rgb(91, 33, 182))' }}>
+          <Link href="/workouts" className="p-4 rounded-lg border border-violet-500/60 bg-violet-700 text-white shadow-md shadow-violet-900/50 transition duration-200" style={{ backgroundImage: 'linear-gradient(to bottom right, rgb(109, 40, 217), rgb(88, 28, 135))' }}>
             <div className="text-sm font-medium mb-1">History</div>
             <div className="text-xs opacity-90">View workouts</div>
           </Link>
@@ -133,7 +133,7 @@ export default function HomePage() {
           ) : (
             <div className="text-center py-4">
               <div className="text-sm text-gray-400 mb-3">No workouts yet</div>
-              <Link href="/workouts/new" className="inline-block px-4 py-2 rounded bg-sky-600 text-white text-sm hover:bg-sky-700">Start Your First Workout</Link>
+              <Link href="/workouts/new" className="inline-block px-4 py-2 rounded border border-sky-500/50 bg-sky-700 text-white text-sm shadow-md shadow-sky-900/40">Start Your First Workout</Link>
             </div>
           )}
         </div>
