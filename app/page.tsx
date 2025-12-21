@@ -62,7 +62,7 @@ export default function HomePage() {
           </Link>
         </div>
         <div className="grid grid-cols-2 gap-3 mt-3">
-          <Link href="/exercises" className="group p-4 rounded-lg bg-amber-600 text-white hover:bg-amber-700 transition duration-200 shadow-lg hover:shadow-amber-600/40">
+          <Link href="/exercises" className="p-4 rounded-lg bg-amber-800 text-white hover:bg-amber-900 transition duration-200 shadow-lg hover:shadow-amber-800/40">
             <div className="text-sm font-medium mb-1">Exercises</div>
             <div className="text-xs opacity-90">Browse library</div>
           </Link>
