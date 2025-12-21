@@ -59,8 +59,12 @@ export default function NewPlanPage() {
   };
 
   const savePlan = async () => {
-    if (!name.trim() || selectedExercises.length === 0) {
-      alert("Please provide a name and select at least one exercise.");
+    if (!name.trim()) {
+      alert("Please provide a name.");
+      return;
+    }
+    if (muscleFilter === "all" && selectedExercises.length === 0) {
+      alert("Select at least one exercise when All Groups is active.");
       return;
     }
     const now = Date.now();
@@ -77,7 +81,7 @@ export default function NewPlanPage() {
   };
 
   return (
-    <main>
+    <main className="no-scrollbar">
       <div className="mb-4">
         <Link href="/plans" className="inline-block px-4 py-2 rounded-lg border border-emerald-500/50 bg-emerald-800 text-white transition duration-200 shadow-md shadow-emerald-900/40">← Back</Link>
       </div>
@@ -98,7 +102,7 @@ export default function NewPlanPage() {
         )}
         {!loadingBodyParts && bodyParts.length > 0 && (
           <div className="space-y-3">
-            <label className="block text-sm font-medium">Browse by Body Part</label>
+            <label className="block text-sm font-medium">Browse by Muscle Group</label>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               <button
                 className={`p-3 rounded-lg border-2 transition capitalize text-center text-sm text-white ${muscleFilter === "all" ? "border-emerald-500 bg-emerald-900/50" : "border-gray-700 bg-gray-900"}`}
@@ -118,16 +122,21 @@ export default function NewPlanPage() {
             </div>
           </div>
         )}
-        <div>
-          <label className="block text-sm font-medium mb-2">Search & Add Exercises</label>
-          <ExercisePicker
-            selectedIds={selectedExercises}
-            onToggle={toggleExercise}
-            muscleFilter={muscleFilter}
-            onMuscleFilterChange={setMuscleFilter}
-            showMuscleFilter={false}
-          />
-        </div>
+        {muscleFilter && (
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <label className="block text-sm font-medium">Search & Add Exercises</label>
+              <span className="text-xs text-gray-400 capitalize">Filter: {muscleFilter}</span>
+            </div>
+            <ExercisePicker
+              selectedIds={selectedExercises}
+              onToggle={toggleExercise}
+              muscleFilter={muscleFilter}
+              onMuscleFilterChange={setMuscleFilter}
+              showMuscleFilter={false}
+            />
+          </div>
+        )}
         {selectedExercises.length > 0 && (
           <div>
             <label className="block text-sm font-medium mb-2">Selected Exercises ({selectedExercises.length})</label>

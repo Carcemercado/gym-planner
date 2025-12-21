@@ -26,19 +26,21 @@ export default function ExercisePicker({ selectedIds, onToggle, muscleFilter, on
     });
   }, []);
 
-  const activeMuscleFilter = muscleFilter ?? internalMuscleFilter;
+  const activeMuscleFilter = (muscleFilter ?? internalMuscleFilter).toLowerCase();
 
   const list = exercises.filter((e) => {
     const matchesSearch = e.name.toLowerCase().includes(query.toLowerCase());
-    const matchesMuscle = activeMuscleFilter === "all" || e.muscle_group === activeMuscleFilter;
+    const exerciseGroup = (e.muscle_group || "").toLowerCase();
+    const matchesMuscle = activeMuscleFilter === "all" || exerciseGroup === activeMuscleFilter;
     return matchesSearch && matchesMuscle;
   });
 
   const handleMuscleChange = (value: string) => {
+    const normalized = value.toLowerCase();
     if (onMuscleFilterChange) {
-      onMuscleFilterChange(value);
+      onMuscleFilterChange(normalized);
     } else {
-      setInternalMuscleFilter(value);
+      setInternalMuscleFilter(normalized);
     }
   };
 
@@ -71,7 +73,7 @@ export default function ExercisePicker({ selectedIds, onToggle, muscleFilter, on
         {list.length} exercise{list.length !== 1 ? 's' : ''} found
       </div>
 
-      <ul className="space-y-1 max-h-[400px] overflow-y-auto">
+      <ul className="space-y-1 max-h-[400px] overflow-y-auto no-scrollbar">
         {list.map((e) => {
           const checked = selectedIds.includes(e.id);
           return (

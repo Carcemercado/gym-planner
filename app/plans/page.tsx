@@ -42,14 +42,15 @@ export default function PlansPage() {
                 .filter(Boolean)
             )
           ).sort();
-          
+
           return (
             <li key={p.id} className="border border-gray-700 rounded p-3 bg-gray-800">
               <div className="flex justify-between items-start">
-                <div className="flex-1">
+                <Link href={`/plans/${p.id}`} className="flex-1 block">
                   <div className="font-semibold">{p.name}</div>
                   {p.notes && <div className="text-sm text-gray-400 mt-1">{p.notes}</div>}
-                  {muscleGroups.length > 0 && (
+
+                  {muscleGroups.length > 0 ? (
                     <div className="mt-2 flex flex-wrap gap-1">
                       {muscleGroups.map((mg) => (
                         <span key={mg} className="px-2 py-0.5 rounded bg-gray-700 text-xs text-gray-300 capitalize">
@@ -57,9 +58,11 @@ export default function PlansPage() {
                         </span>
                       ))}
                     </div>
+                  ) : (
+                    <div className="mt-2 text-xs text-gray-400">No muscle groups tagged</div>
                   )}
-                </div>
-                <div className="flex gap-2">
+                </Link>
+                <div className="flex gap-2 ml-3">
                   <Link href={`/workouts/new?planId=${p.id}`} className="px-2 py-1 rounded border border-emerald-500/50 bg-emerald-700 text-white text-sm transition shadow-sm shadow-emerald-900/30">Start</Link>
                   <button className="px-2 py-1 rounded border border-rose-500/60 bg-rose-700 text-white text-sm transition shadow-sm shadow-rose-900/30" onClick={() => deletePlan(p.id)}>Delete</button>
                 </div>

@@ -19,6 +19,9 @@ function NewWorkoutContent() {
   const [startedAt, setStartedAt] = useState<Date | null>(null);
   const [planName, setPlanName] = useState<string | null>(null);
   const [plans, setPlans] = useState<WorkoutPlan[]>([]);
+  const [exercises, setExercises] = useState<Record<string, Exercise>>({});
+  const [showExercisePicker, setShowExercisePicker] = useState(false);
+  const [deleteMode, setDeleteMode] = useState(false);
 
   useEffect(() => {
     // ensure a workout entity exists when entering the page
@@ -36,6 +39,9 @@ function NewWorkoutContent() {
       await db.workouts.put(w);
       setWorkoutId(w.id);
       setStartedAt(new Date(now));
+
+      const ex = await db.exercises.toArray();
+      setExercises(Object.fromEntries(ex.map((e) => [e.id, e])));
 
       // If planId is provided, load the plan and pre-select exercises
       if (planId) {
@@ -61,6 +67,17 @@ function NewWorkoutContent() {
   };
 
   const setCurrent = (id: string) => setCurrentExerciseId(id);
+
+  const handleExerciseClick = (id: string) => {
+    if (deleteMode) {
+      setSelected((prev) => prev.filter((x) => x !== id));
+      if (currentExerciseId === id) {
+        setCurrentExerciseId(null);
+      }
+    } else {
+      setCurrent(id);
+    }
+  };
 
   const addSet = async (reps: number, weight: number | undefined, unit: Unit) => {
     if (!workoutId || !currentExerciseId) return;
@@ -125,14 +142,55 @@ function NewWorkoutContent() {
         )}
 
         <section className="space-y-2">
-          <h2 className="font-semibold">Pick exercises</h2>
-          <ExercisePicker selectedIds={selected} onToggle={toggleExercise} />
-          <div className="flex flex-wrap gap-2">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="font-semibold">Pick exercises</h2>
+            <div className="flex gap-2">
+              <button
+                className="px-3 py-1 rounded border border-sky-500/50 bg-sky-700 text-white text-sm shadow-sm shadow-sky-900/40"
+                onClick={() => {
+                  setShowExercisePicker((v) => !v);
+                  setDeleteMode(false);
+                }}
+              >
+                {showExercisePicker ? "Hide" : "Add"} Exercises
+              </button>
+              <button
+                className={`px-3 py-1 rounded border text-sm ${
+                  deleteMode
+                    ? "border-rose-500/70 bg-rose-800 text-white shadow-sm shadow-rose-900/40"
+                    : "border-gray-600 bg-gray-800 text-gray-100"
+                }`}
+                onClick={() => setDeleteMode((v) => !v)}
+              >
+                {deleteMode ? "Done" : "Delete"}
+              </button>
+            </div>
+          </div>
+
+          {showExercisePicker && (
+            <ExercisePicker selectedIds={selected} onToggle={toggleExercise} />
+          )}
+
+          <div className="space-y-2">
             {selected.map((id) => (
-              <button key={id} className={id === currentExerciseId ? "px-2 py-1 rounded bg-sky-600 text-white" : "px-2 py-1 rounded bg-gray-700 text-gray-200"} onClick={() => setCurrent(id)}>
-                {id.slice(0, 6)}
+              <button
+                key={id}
+                className={`w-full text-left rounded border px-3 py-2 transition ${
+                  deleteMode
+                    ? "border-rose-500/70 bg-rose-900/60 text-white"
+                    : id === currentExerciseId
+                    ? "border-sky-500/70 bg-sky-900/50 text-white"
+                    : "border-gray-700 bg-gray-800 text-gray-200"
+                }`}
+                onClick={() => handleExerciseClick(id)}
+              >
+                <div className="font-medium">{exercises[id]?.name || "Exercise"}</div>
+                {exercises[id]?.muscle_group && (
+                  <div className="text-xs text-gray-400 capitalize">{exercises[id]?.muscle_group}</div>
+                )}
               </button>
             ))}
+            {selected.length === 0 && <div className="text-sm text-gray-400">No exercises selected.</div>}
           </div>
         </section>
 

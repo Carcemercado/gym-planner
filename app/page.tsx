@@ -62,11 +62,11 @@ export default function HomePage() {
           </Link>
         </div>
         <div className="grid grid-cols-2 gap-3 mt-3">
-          <Link href="/exercises" className="p-4 rounded-lg border border-amber-500/60 bg-amber-900 text-white shadow-md shadow-amber-900/50 transition duration-200" style={{ backgroundColor: "#78350f" }}>
+          <Link href="/exercises" className="p-4 rounded-lg border border-amber-500/60 bg-amber-900 text-white shadow-md shadow-amber-900/50 transition duration-200">
             <div className="text-sm font-medium mb-1">Exercises</div>
             <div className="text-xs opacity-90">Browse library</div>
           </Link>
-          <Link href="/workouts" className="p-4 rounded-lg border border-violet-500/60 bg-violet-700 text-white shadow-md shadow-violet-900/50 transition duration-200" style={{ backgroundImage: 'linear-gradient(to bottom right, rgb(109, 40, 217), rgb(88, 28, 135))' }}>
+          <Link href="/workouts" className="p-4 rounded-lg border border-violet-500/60 bg-violet-700 text-white shadow-md shadow-violet-900/50 transition duration-200">
             <div className="text-sm font-medium mb-1">History</div>
             <div className="text-xs opacity-90">View workouts</div>
           </Link>

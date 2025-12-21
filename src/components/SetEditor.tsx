@@ -7,7 +7,7 @@ export type Unit = "kg" | "lb";
 export default function SetEditor({ onAdd }: { onAdd: (reps: number, weight: number | undefined, unit: Unit) => void }) {
   const [reps, setReps] = useState<number>(8);
   const [weight, setWeight] = useState<number>(60);
-  const [unit, setUnit] = useState<Unit>("kg");
+  const [unit, setUnit] = useState<Unit>("lb");
 
   return (
     <div className="flex gap-2 items-end">
